@@ -1,5 +1,6 @@
 const cart: HTMLButtonElement = document.querySelector('.cart')!;
 const buys: NodeListOf<HTMLButtonElement> = document.querySelectorAll('.buy');
+const goCart: HTMLButtonElement = document.querySelector('.goCart')!;
 const modal: HTMLDivElement = document.querySelector('#productModal')!;
 const modalTitle: HTMLHeadingElement = document.querySelector('#modalTitle')!;
 const modalPrice: HTMLParagraphElement = document.querySelector('#modalPrice')!;
@@ -38,8 +39,21 @@ function handleBuyClick(e: MouseEvent) {
 
 
 function handleCartClick() {
+    if (!object.title) {
+        header.innerHTML = `
+            <h1 style="font-size: 32px; font-weight: bold; text-align: center;">
+                <span style="color: black;">Your</span> 
+                <span style="color: green;">Cart</span>
+            </h1>
+            <p style="text-align: center; color: gray; font-size: 18px;">Your cart is empty</p>
+        `;
+        return;
+    }
+
     let buy = object;
     let i = 1;
+    let priceNum = parseFloat(buy.price.replace(/[^0-9.]/g, ""));
+    let soliq = priceNum % 20;
 
     header.innerHTML = `
         <h1 style="font-size: 32px; font-weight: bold; text-align: center;">
@@ -74,7 +88,7 @@ function handleCartClick() {
                             <button style="padding: 5px;" onclick="i++">+</button>
                         </td>
                         <td>
-                            <button class="remove-item" style="background-color: red; color: white; border: none; padding: 5px;">
+                            <button class="remove-item" style="color: white; border: none; padding: 5px;">
                                 🗑
                             </button>
                         </td>
@@ -84,18 +98,22 @@ function handleCartClick() {
             </table>
         </div>
         <div style="text-align: center; margin-top: 20px;">
-            <button style="border: 1px solid red; background-color: white; color: red; padding: 10px;">
+            <button class="clearAll" style="border: 1px solid red; background-color: white; color: red; padding: 10px;">
                 Clear Cart
             </button>
-            <p style="color: blue;">Sub Total: $599</p>
-            <p style="color: blue;">Tax: $59.9</p>
-            <p style="color: blue; font-weight: bold;">Total: <b>$658.9</b></p>
+            <p style="color: blue;">Sub Total: ${buy.price}</p>
+            <p style="color: blue;">Tax: $${soliq}</p>
+            <p style="color: blue; font-weight: bold;">Total: <b>$${soliq + priceNum}</b></p>
         </div>
     `;
 
     document.body.append(div);
 
     div.querySelector(".remove-item")!.addEventListener("click", () => {
+        div.remove();
+    });
+
+    div.querySelector(".clearAll")!.addEventListener("click", () => {
         div.remove();
     });
 }
@@ -105,7 +123,7 @@ cart.addEventListener('click', handleCartClick);
 
 
 buys.forEach(buy => buy.addEventListener('click', handleBuyClick));
-
+goCart.addEventListener('click', handleCartClick);
 
 store.addEventListener('click', () => {
     modal.classList.add('hidden');
