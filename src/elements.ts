@@ -1,0 +1,9 @@
+export const cartButton = document.querySelector('.cart') as HTMLButtonElement;
+export const buyButtons = document.querySelectorAll('.buy');
+export const goCartButton = document.querySelector('.goCart') as HTMLButtonElement;
+export const modal = document.querySelector('#productModal') as HTMLDivElement;
+export const modalTitle = document.querySelector('#modalTitle') as HTMLHeadingElement;
+export const modalPrice = document.querySelector('#modalPrice') as HTMLParagraphElement;
+export const modalImage = document.querySelector('#modalImage') as HTMLImageElement;
+export const storeButton = document.querySelector('.store') as HTMLButtonElement;
+export const header = document.querySelector('.header') as HTMLDivElement;
