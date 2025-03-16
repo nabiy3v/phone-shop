@@ -7,3 +7,4 @@ export const modalPrice = document.querySelector('#modalPrice') as HTMLParagraph
 export const modalImage = document.querySelector('#modalImage') as HTMLImageElement;
 export const storeButton = document.querySelector('.store') as HTMLButtonElement;
 export const header = document.querySelector('.header') as HTMLDivElement;
+export const images = document.querySelectorAll('.images') as NodeListOf<HTMLImageElement>;

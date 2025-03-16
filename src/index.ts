@@ -1,4 +1,4 @@
-import { modalTitle, modalPrice, modalImage, modal, header, cartButton, buyButtons, goCartButton, storeButton } from "./elements";
+import { modalTitle, modalPrice, modalImage, modal, header, cartButton, buyButtons, goCartButton, storeButton, images } from "./elements";
 
 type Product = {
   title: string;
@@ -13,10 +13,10 @@ function handleBuyClick(event: Event) {
   const productCard = button.closest('.bg-white') as HTMLDivElement;
   if (!productCard) return;
 
-  const title = productCard.querySelector('h2')?.innerText || '';
-  const priceText = productCard.querySelector('p')?.innerText || '';
+  const title = productCard.querySelector('h2')?.innerText!;
+  const priceText = productCard.querySelector('p')?.innerText!;
   const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
-  const img = (productCard.querySelector('img') as HTMLImageElement)?.src || '';
+  const img = (productCard.querySelector('img') as HTMLImageElement).src;
 
   selectedProduct = { title, price, img };
 
@@ -123,6 +123,48 @@ function handleCartClick() {
   })
 }
 
+function handleImgClick(e: MouseEvent) {
+  header.innerHTML = '';
+  let target = e.target as HTMLImageElement;
+  let imgSrc = target.src;
+  header.style.position = 'absolute';
+  header.style.left = '50%';
+  header.style.top = '50%';
+  header.style.transform = 'translate(-50%, -50%)';
+  let model = target.nextElementSibling?.children[0].innerHTML;
+  let price = target.nextElementSibling?.children[1].innerHTML;
+
+  header.innerHTML = `
+  <div class="bg-white p-6 rounded-lg flex flex-col md:flex-row items-center max-w-4xl">
+      <div class="md:w-1/3">
+          <img src="${imgSrc}" alt="Google Pixel - Black" class="w-full rounded">
+      </div>
+      <div class="md:w-2/3 md:ml-6 text-gray-700">
+          <h2 class="text-2xl font-semibold text-gray-900">${model}</h2>
+          <p class="mt-2"><strong>Model:</strong> ${model}</p>
+          <p><strong>Made By:</strong> GOOGLE</p>
+          <p class="mt-2 text-lg font-bold text-teal-600">Price: ${price}</p>
+          <p class="mt-2 font-semibold">Some Info About Product:</p>
+          <p class="text-sm text-gray-600">Lorem Ipsum Dolor Amet Offal Butcher Quinoa Sustainable Gastropub, Echo Park Actually Green Juice Sriracha Paleo.</p>
+          <div class="mt-4 flex gap-2">
+              <button class="back px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">Back To Products</button>
+              <button class="AddToCart px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Add To Cart</button>
+          </div>
+      </div>
+  </div>
+`;
+
+header.querySelector('.back')?.addEventListener('click', () => {
+  location.reload();
+})
+
+header.querySelector('.AddToCart')?.addEventListener('click', () => {
+    handleCartClick();
+})
+
+}
+
+images.forEach(img => img.addEventListener('click', handleImgClick));
 cartButton.addEventListener('click', handleCartClick);
 buyButtons.forEach(buy => buy.addEventListener('click', handleBuyClick));
 goCartButton.addEventListener('click', handleCartClick);
